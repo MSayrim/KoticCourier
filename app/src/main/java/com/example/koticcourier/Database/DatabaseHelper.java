@@ -22,10 +22,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "kcourier.db";
     private static final int DATABASE_VERSION = 1;
     private Context _context;
-
+    //Kullanıcı Tablosu oluşturuldu (Sqlite kodu).
     private static final String TABLE_USERS_CREATE =
             "CREATE TABLE Users (ID INTEGER PRIMARY KEY AUTOINCREMENT, Cell TEXT, Role TEXT , IsOnline INTEGER)";
-
+    //Sipariş Tablosu oluşuturuldu (Sqlite kodu).
     private static final String TABLE_Order_CREATE =
             "CREATE TABLE Orders (ID INTEGER PRIMARY KEY AUTOINCREMENT, OrderDetail TEXT, RequestDate TEXT ,Status INTEGER,UserID INTEGER,CourierID INTEGER, FOREIGN  KEY(UserID) REFERENCES Users(UserID),FOREIGN  KEY(CourierID) REFERENCES Users(UserID)) ";
 
@@ -36,6 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        //Tablolar oluşturuldu.
         db.execSQL(TABLE_USERS_CREATE);
         db.execSQL(TABLE_Order_CREATE);
     }
@@ -48,6 +49,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    //Yeni sipariş oluşturma sipariş içeriği ve seçilen kurye ID si alıyor
     public String createOrder(String orderDetail,int courierID){
         String respond;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -71,6 +73,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return respond;
     }
 
+
+    //Kayıt olma işlemi tıklanan butona göre rol geliyor buraya
     public long register(String cell,String role){
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -93,6 +97,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
+
+    //Kayıt olunmak istenen telefon numarası kontrolü
     public String isExist(String cell){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor rslt = db.rawQuery("SELECT * FROM Users where Cell ="+cell,null);
@@ -107,6 +113,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+
+    //Giriş yapma işlemi burada "CUser" sınıfında singleton olarak kullanıcı bilgileri tutuluyor
     public int login(String cell,String role){
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -133,6 +141,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return 0;
     }
 
+
+    //Kullanıcıların görebilmesi için çevrimiçi kuryeleri getiriyor
     public List<User> getOnlineCouriers(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor rslt = db.rawQuery("SELECT * FROM Users where IsOnline = 1 AND Role ='Courier'",null);
@@ -151,6 +161,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return  onlineCouriers;
     }
 
+
+    //Giriş yapan kullanıcının rolüne ve idsine göre sipariş listesi getiriyor
     public List<Order> getOrders(){
         List<Order> orders = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -161,7 +173,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             rslt = db.rawQuery("SELECT * FROM Orders where UserID ="+ CUser.CurrentUser().getUserID(),null );
         }
 
-
+        //imleçi başa çekiyor.Defaultta Cursor(imleç) işlemden sonra bir sonraki boş satıra geçiyor.
         rslt.moveToFirst ();
         for (int i = 0; i<rslt.getCount();i++){
             Order tempOrder = new Order(rslt.getString(rslt.getColumnIndex("OrderDetail")),Status.forCode(rslt.getInt(rslt.getColumnIndex("Status"))),rslt.getInt(rslt.getColumnIndex("UserID")),rslt.getInt(rslt.getColumnIndex("CourierID")));
@@ -174,6 +186,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return orders;
     }
 
+    //id ye göre telefon numarası getiriyor. siparişlerde sadece userID ve courierID tutulduğu için User tablosundan telefon numaralarını getiriyor
     public String getCellByID(int id){
         SQLiteDatabase db = this.getWritableDatabase ();
         Cursor rslt = db.rawQuery ( "SELECT * FROM Users where ID ="+id, null);
@@ -181,6 +194,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close ();
         return rslt.getString ( rslt.getColumnIndex ( "Cell" ) );
     }
+    //Sipariş durumunu güncelliyor. Tabloda Enum tutulmadığı için enumun sayısal değerini alıyor.
     public int changeStatusOrder(int status,int id){
         SQLiteDatabase db = this.getWritableDatabase ();
         ContentValues cv = new ContentValues();
@@ -191,6 +205,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return row;
     }
 
+
+    //login işleminde kullanıcıları online duruma getiriyor
     public void setOnline(String id){
         SQLiteDatabase db = this.getWritableDatabase ();
         Cursor rslt = db.rawQuery("SELECT * FROM Users where ID ="+id, null);
@@ -202,7 +218,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update ( "Users",cv,"ID = ?",new String[]{id});
         db.close ();
     }
-
+    //login işleminde kullanıcıları offline duruma getiriyor
     public void setOffline(String id){
         SQLiteDatabase db = this.getWritableDatabase ();
         Cursor rslt = db.rawQuery("SELECT * FROM Users where ID ="+id, null);
@@ -215,6 +231,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close ();
     }
 
+
+    //Uygulama kurulunca kurye testinin direk apk üstünden yapılabilmesi için kullanıcı ve kurye ekliyor.
     public void createDummyDatas(){
         if(!isExist("5554443322").equals("none")){
             return;

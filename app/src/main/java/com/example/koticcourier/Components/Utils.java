@@ -3,6 +3,8 @@ import android.text.TextUtils;
 import java.util.regex.Pattern;
 
 public class Utils {
+
+    //Telefon no kontrol
     public final static boolean isValidPhone(CharSequence target) {
         if (TextUtils.isEmpty(target)) {
             return false;
