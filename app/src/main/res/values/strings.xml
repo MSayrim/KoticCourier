@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">KoticCourier</string>
+    <string name="courier_lgn">Kurye Giriş</string>
+    <string name="user_lgn">Kullanıcı Giriş</string>
+    <string name="phone_hint">Telefon No</string>
+    <string name="courier_phone">Kurye Tel No</string>
+    <string name="order_it">Sipariş Et</string>
+    <string name="Cancel">Iptal</string>
+    <string name="login_success">Giriş Başarılı</string>
+    <string name="registered_success">Başarı ile kayıt olundu</string>
+    <string name="on_confirm">Onayda</string>
+    <string name="on_progress">Hazırlanıyor</string>
+    <string name="success">Başarılı</string>
+    <string name="fail">Başarısız</string>
+    <string name="canceled">İptal Edildi</string>
+    <string name="accept">Kabul Et</string>
+    <string name="decline">Red Et</string>
+    <string name="cell_phone">Telefon No</string>
+    <string name="user_contact">Kullanıcı İletişim</string>
+    <string name="couriers">Kuryeler</string>
+    <string name="orders">Siparişler</string>
+    <string name="wrong_type">Yanlış Kullanıcı Tipi</string>
+    <string name="complete_order">Tamamla</string>
+    <string name="delivered_order">Teslim Et</string>
+    <string name="order_title">Gelen Sipariş</string>
+    <string name="no_current_order">Mevcut Siparişiniz Yok</string>
+    <string name="log_out_warning">Çıkış Yapılıyor Offline olacaksınız..</string>
+    <string name="empty_order_detail">Mevcut Siparişiniz Bulunmamaktadır</string>
+    <string name="fail_attempt">İşlem Başarısız</string>
+    <string name="cell_style_hint">Lütfen 10 haneli telefon numaranızı giriniz (5XXYYYZZTT)</string>
+</resources>
